@@ -1,3 +1,11 @@
 export { operatorRoutes } from './operatorRoutes';
 export { evaluatorRoutes } from './evaluatorRoutes';
 export { jenisIzinRoutes } from './jenisIzinRoutes';
+export { daftarPermohonanRoutes } from './daftarPermohonanRoutes';
+export { statusProgressRoutes  } from './statusProgressRoutes';
+export { statusOssRoutes } from './statusOssRoutes';
+export { lokasiKecamatanRoutes } from './lokasiKecamatanRoutes';
+export { lokasiKabupatenRoutes } from './lokasiKabupatenRoutes';
+export { lokasiDesaRoutes } from './lokasiDesaRoutes';
+export { badanUsahaRoutes } from './badanUsahaRoutes';
+export { daftarEvaluatorPermohonanRoutes } from './daftarEvaluatorPermohonanRoutes';

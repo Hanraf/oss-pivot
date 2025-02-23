@@ -6,6 +6,7 @@ export const evaluatorRoutes = Router();
 const routes = [
   { method: 'post', path: '/', handler: evaluatorController.createEvaluator },
   { method: 'get', path: '/', handler: evaluatorController.getEvaluators },
+  { method: 'get', path: '/:id', handler: evaluatorController.getEvaluator },
   { method: 'put', path: '/:id', handler: evaluatorController.updateEvaluator },
   { method: 'delete', path: '/:id', handler: evaluatorController.deleteEvaluator },
 ] as const;

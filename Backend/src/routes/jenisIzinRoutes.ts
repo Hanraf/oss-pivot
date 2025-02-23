@@ -5,7 +5,8 @@ export const jenisIzinRoutes = Router();
 
 const routes = [
   { method: 'post', path: '/', handler: jenisIzinController.createJenisIzin },
-  { method: 'get', path: '/', handler: jenisIzinController.getJenisIzin },
+  { method: 'get', path: '/', handler: jenisIzinController.getJenisIzins },
+  { method: 'get', path: '/:id', handler: jenisIzinController.getJenisIzin },
   { method: 'put', path: '/:id', handler: jenisIzinController.updateJenisIzin },
   { method: 'delete', path: '/:id', handler: jenisIzinController.deleteJenisIzin },
 ] as const;

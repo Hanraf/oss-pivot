@@ -6,6 +6,7 @@ export const operatorRoutes = Router();
 const routes = [
   { method: 'post', path: '/', handler: OperatorController.createOperator },
   { method: 'get', path: '/', handler: OperatorController.getOperators },
+  { method: 'get', path: '/:id', handler: OperatorController.getOperator },
   { method: 'put', path: '/:id', handler: OperatorController.updateOperator },
   { method: 'delete', path: '/:id', handler: OperatorController.deleteOperator },
 ] as const;
