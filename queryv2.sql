@@ -1,42 +1,41 @@
 CREATE TABLE operator(
-	id_operator int NOT NULL,
+	id_operator int NOT NULL AUTO_INCREMENT,
     nama_operator varchar(100),
     PRIMARY KEY(id_operator)
 );
 
 CREATE TABLE evaluator(
-	id_evaluator int NOT NULL,
+	id_evaluator int NOT NULL AUTO_INCREMENT,
     nama_evaluator varchar(100),
     PRIMARY KEY(id_evaluator)
 );
 
 CREATE TABLE jenis_izin(
-	id_jenis_izin int NOT NULL,
+	id_jenis_izin int NOT NULL AUTO_INCREMENT,
     nama_jenis_izin varchar(30),
     PRIMARY KEY(id_jenis_izin)
 );
 
 CREATE TABLE badan_usaha(
-	id_badan_usaha int NOT NULL,
-	
+	id_badan_usaha int NOT NULL AUTO_INCREMENT,
     nama_badan_usaha varchar(255),
     PRIMARY KEY(id_badan_usaha)
 );
 
 CREATE TABLE status_oss(
-	id_status_oss int NOT NULL,
+	id_status_oss int NOT NULL AUTO_INCREMENT,
     nama_status varchar(15),
     PRIMARY KEY(id_status_oss)
 );
 
 CREATE TABLE progress(
-	id_progress int NOT NULL,
+	id_progress int NOT NULL AUTO_INCREMENT,
     nama_progress varchar(15),
     PRIMARY KEY(id_progress)
 );
 
 CREATE TABLE lokasi_kabupaten(
-	id_kabupaten int NOT NULL,
+	id_kabupaten int NOT NULL AUTO_INCREMENT,
     kode_kabupaten varchar(4),
     nama_kabupaten varchar(100),
     PRIMARY KEY(id_kabupaten)
@@ -50,7 +49,7 @@ CREATE TABLE lokasi_kecamatan(
     FOREIGN KEY(id_kabupaten) REFERENCES lokasi_kabupaten(id_kabupaten)
 );
 CREATE TABLE lokasi_desa(
-	id_desa int NOT NULL,
+	id_desa int NOT NULL AUTO_INCREMENT,
     id_kecamatan int,
     kode_desa varchar(12),
     nama_desa varchar(100),
@@ -61,7 +60,7 @@ CREATE TABLE lokasi_desa(
 CREATE TABLE daftar_permohonan(
 	id_permohonan int NOT NULL AUTO_INCREMENT,
     id_jenis_izin int,
-    id_badan_usaha varchar(100),
+    id_badan_usaha int,
     id_status_oss int,
     id_progress int,
     id_kabupaten int,
@@ -85,11 +84,11 @@ CREATE TABLE daftar_permohonan(
 );
 
 CREATE TABLE daftar_evaluator_permohonan(
-	id_evaluator_permohonan int NOT NULL,
+	id_evaluator_permohonan int NOT NULL AUTO_INCREMENT,
     id_permohonan int,
-    id_evaluator varchar(100),
-    id_operator varchar(100),
-    tanggal_disposisi TIMESTAMP,
+    id_evaluator int,
+    id_operator int,
+    tanggal_disposisi DATETIME,
     tautan_disposisi TEXT,
     tanggal_pengecekan_evaluator DATETIME,
     catatan_evaluasi TEXT,
