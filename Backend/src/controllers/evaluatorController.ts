@@ -3,7 +3,7 @@ import { ResultSetHeader } from 'mysql2';
 import connection from '../config/db';
 import { ResponseSuccess } from '../model/Response/responseSuccess';
 
-export const createOperator = (req: Request, res: Response) => {
+export const createEvaluator = (req: Request, res: Response) => {
   const { name } = req.body;
 
   if (!name){
@@ -12,7 +12,7 @@ export const createOperator = (req: Request, res: Response) => {
     return;
   };
 
-  const query = "INSERT INTO operator (nama_operator) VALUES (?)";
+  const query = "INSERT INTO evaluator (nama_evaluator) VALUES (?)";
   connection.query(query, [name], (err, results) => {
     if (err){
       console.error('Error inserting data:', err);
@@ -26,8 +26,8 @@ export const createOperator = (req: Request, res: Response) => {
   });
 };
 
-export const getOperators = (req: Request, res: Response) => {
-  const query = "SELECT * FROM operator WHERE deleted_at IS NULL";
+export const getEvaluators = (req: Request, res: Response) => {
+  const query = "SELECT * FROM evaluator WHERE deleted_at IS NULL";
 
   connection.query(query, (err, results) => {
     if (err) {
@@ -43,16 +43,19 @@ export const getOperators = (req: Request, res: Response) => {
   });
 };
 
-export const updateOperator = (req: Request, res: Response) => {
+export const updateEvaluator = (req: Request, res: Response) => {
   const { id } = req.params;
   const { name } = req.body;
 
   if (!name) {
     res.status(400).json({ message: 'name required' });
     return;
+  } else if (!id){
+    res.status(400).json({ message: 'id required' });
+    return;
   }
 
-  const query = "UPDATE operator SET nama_operator = ? WHERE id_operator = ? AND deleted_at IS NULL";
+  const query = "UPDATE evaluator SET nama_evaluator = ? WHERE id_evaluator = ? AND deleted_at IS NULL";
   connection.query(query, [name, id], (err, results) => {
     if (err) {
       console.error('Error updating data:', err);
@@ -61,7 +64,7 @@ export const updateOperator = (req: Request, res: Response) => {
 
     const result = results as ResultSetHeader;
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Operator not found' });
+      return res.status(404).json({ message: 'evaluator not found' });
     }
 
     const response: ResponseSuccess = {
@@ -72,7 +75,7 @@ export const updateOperator = (req: Request, res: Response) => {
   });
 };
 
-export const deleteOperator = (req: Request, res: Response) => {
+export const deleteEvaluator = (req: Request, res: Response) => {
   const { id } = req.params;
 
   if (!id) {
@@ -80,7 +83,7 @@ export const deleteOperator = (req: Request, res: Response) => {
     return;
   }
 
-  const query = "UPDATE operator SET deleted_at = NOW() WHERE id_operator = ?";
+  const query = "UPDATE evaluator SET deleted_at = NOW() WHERE id_evaluator = ?";
   connection.query(query, [id], (err, results) => {
     if (err) {
       console.error('Error updating data:', err);
@@ -89,7 +92,7 @@ export const deleteOperator = (req: Request, res: Response) => {
 
     const result = results as ResultSetHeader;
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Operator not found' });
+      return res.status(404).json({ message: 'evaluator not found' });
       
     }
 

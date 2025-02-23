@@ -1,9 +1,15 @@
 import { Router } from 'express';
-import { createOperator, getOperators, updateOperator, deleteOperator } from '../controllers/operatorController';
+import * as OperatorController from '../controllers/operatorController';
 
 export const operatorRoutes = Router();
 
-operatorRoutes.post('/', createOperator);
-operatorRoutes.get('/', getOperators);
-operatorRoutes.put('/:id', updateOperator);
-operatorRoutes.delete('/:id', deleteOperator);
+const routes = [
+  { method: 'post', path: '/', handler: OperatorController.createOperator },
+  { method: 'get', path: '/', handler: OperatorController.getOperators },
+  { method: 'put', path: '/:id', handler: OperatorController.updateOperator },
+  { method: 'delete', path: '/:id', handler: OperatorController.deleteOperator },
+] as const;
+
+routes.forEach(({ method, path, handler }) => {
+  (operatorRoutes[method as keyof Omit<Router, "use">] as Function)(path, handler);
+});
