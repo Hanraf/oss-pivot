@@ -18,9 +18,9 @@ export const getLokasikabupatenService = async (id_kabupaten: number) => {
   return results
 }
 
-export const updateLokasikabupatenService = async (id_kabupaten: number, nama_kabupaten: string) => {
-  const query = "UPDATE lokasi_kabupaten SET nama_kabupaten = ? WHERE id_kabupaten = ? AND deleted_at IS NULL";
-  const [results] = await connection.promise().query(query, [nama_kabupaten, id_kabupaten]);
+export const updateLokasikabupatenService = async (id_kabupaten: number, kode_kabupaten: string, nama_kabupaten: string) => {
+  const query = "UPDATE lokasi_kabupaten SET kode_kabupaten = ?, nama_kabupaten = ? WHERE id_kabupaten = ? AND deleted_at IS NULL";
+  const [results] = await connection.promise().query(query, [kode_kabupaten, nama_kabupaten, id_kabupaten]);
   return results;
 };
 
