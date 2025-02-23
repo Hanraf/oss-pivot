@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
 import { ResultSetHeader } from 'mysql2';
-import * as operatorServices from '../services/operatorServices';
+import * as jenisIzinServices from '../services/jenisIzinServices';
 import { ResponseSuccess } from '../model/Response/responseSuccess';
 
 // 🔹 CREATE
-export const createOperator = async (req: Request, res: Response) => {
+export const createJenisIzin = async (req: Request, res: Response) => {
   try {
-    const { nama_operator } = req.body;
-    if (!nama_operator) return res.status(400).json({ message: 'Jenis izin required' });
+    const { nama_jenis_izin } = req.body;
+    if (!nama_jenis_izin) return res.status(400).json({ message: 'Jenis izin required' });
 
-    const results = await operatorServices.createOperatorService(nama_operator);
+    const results = await jenisIzinServices.createJenisIzinService(nama_jenis_izin);
     const response: ResponseSuccess = {
       message: 'success',
       data: results
@@ -22,9 +22,10 @@ export const createOperator = async (req: Request, res: Response) => {
   }
 };
 
-export const getOperators = async (req: Request, res: Response) => {
+// 🔹 READ
+export const getJenisIzins = async (req: Request, res: Response) => {
   try {
-    const results = await operatorServices.getOperatorsService();
+    const results = await jenisIzinServices.getJenisIzinsService();
     const response: ResponseSuccess = {
       message: 'success',
       data: results
@@ -37,10 +38,10 @@ export const getOperators = async (req: Request, res: Response) => {
   }
 };
 
-export const getOperator = async (req: Request, res: Response) => {
+export const getJenisIzin = async (req: Request, res: Response) => {
   try {
-    const { id_operator } = req.params
-    const results = await operatorServices.getOperatorService( id_operator );
+    const { id_jenis_izin } = req.params
+    const results = await jenisIzinServices.getJenisIzinService( id_jenis_izin );
     const response: ResponseSuccess = {
       message: 'success',
       data: results
@@ -53,14 +54,15 @@ export const getOperator = async (req: Request, res: Response) => {
   }
 };
 
-export const updateOperator = async (req: Request, res: Response) => {
+// 🔹 UPDATE
+export const updateJenisIzin = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { nama_operator } = req.body;
+    const { nama_jenis_izin } = req.body;
 
-    if (!nama_operator) return res.status(400).json({ message: 'Isi Nama Operator' });
+    if (!nama_jenis_izin) return res.status(400).json({ message: 'Isi Jenis izin' });
 
-    const results = (await operatorServices.updateOperatorService(id, nama_operator)) as ResultSetHeader;
+    const results = (await jenisIzinServices.updateJenisIzinService(id, nama_jenis_izin)) as ResultSetHeader;
 
     if (results.affectedRows === 0) return res.status(404).json({ message: 'Jenis izin not found' });
     const response: ResponseSuccess = {
@@ -75,13 +77,14 @@ export const updateOperator = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteOperator = async (req: Request, res: Response) => {
+// 🔹 DELETE
+export const deleteJenisIzin = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
     if (!id) return res.status(400).json({ message: 'Invalid Request' });
 
-    const results = (await operatorServices.deleteOperatorService(id)) as ResultSetHeader;
+    const results = (await jenisIzinServices.deleteJenisIzinService(id)) as ResultSetHeader;
 
     if (results.affectedRows === 0) return res.status(404).json({ message: 'Jenis izin not found' });
 

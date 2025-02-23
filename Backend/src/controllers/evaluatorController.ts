@@ -1,101 +1,97 @@
 import { Request, Response } from 'express';
 import { ResultSetHeader } from 'mysql2';
-import connection from '../config/db';
+import * as evaluatorServices from '../services/evaluatorServices';
 import { ResponseSuccess } from '../model/Response/responseSuccess';
 
-export const createEvaluator = (req: Request, res: Response) => {
-  const { name } = req.body;
+export const createEvaluator = async (req: Request, res: Response) => {
+  try {
+    const { nama_evaluator } = req.body;
+    if (!nama_evaluator) return res.status(400).json({ message: 'Evaluator name required' });
 
-  if (!name){
-    console.error('Insert name');
-    res.status(400).json({ message: 'name required' });
-    return;
-  };
-
-  const query = "INSERT INTO evaluator (nama_evaluator) VALUES (?)";
-  connection.query(query, [name], (err, results) => {
-    if (err){
-      console.error('Error inserting data:', err);
-      return res.status(500).json({ message: 'Database error' });
-    }
+    const results = await evaluatorServices.createevaluatorService(nama_evaluator);
     const response: ResponseSuccess = {
       message: 'success',
       data: results
     }
     return res.status(201).json(response);
-  });
+
+  } catch (err) {
+    console.error('Error inserting data:', err);
+    return res.status(500).json({ message: 'Database error' });
+  }
 };
 
-export const getEvaluators = (req: Request, res: Response) => {
-  const query = "SELECT * FROM evaluator WHERE deleted_at IS NULL";
-
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error('Error fetching data:', err);
-      return res.status(500).json({ message: 'Database error' });
+export const getEvaluators = async (req: Request, res: Response) => {
+  try {
+    const results = await evaluatorServices.getevaluatorsService();
+    const response: ResponseSuccess = {
+      message: 'success',
+      data: results
     }
+    return res.status(200).json(response);
+
+  } catch (err) {
+    console.error('Error fetching data:', err);
+    return res.status(500).json({ message: 'Database error' });
+  }
+};
+
+export const getEvaluator = async (req: Request, res: Response) => {
+  try {
+    const { id_evaluator } = req.params
+    const results = await evaluatorServices.getEvaluatorService( id_evaluator );
+    const response: ResponseSuccess = {
+      message: 'success',
+      data: results
+    }
+    return res.status(200).json(response);
+
+  } catch (err) {
+    console.error('Error fetching data:', err);
+    return res.status(500).json({ message: 'Database error' });
+  }
+};
+
+export const updateEvaluator = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { nama_evaluator } = req.body;
+
+    if (!nama_evaluator) return res.status(400).json({ message: 'Isi nama evaluator' });
+
+    const results = (await evaluatorServices.updateevaluatorService(id, nama_evaluator)) as ResultSetHeader;
+
+    if (results.affectedRows === 0) return res.status(404).json({ message: 'Evaluator not found' });
+    const response: ResponseSuccess = {
+      message: 'success',
+      data: results
+    }
+    return res.status(200).json(response);
+
+  } catch (err) {
+    console.error('Error updating data:', err);
+    return res.status(500).json({ message: 'Database error' });
+  }
+};
+
+export const deleteEvaluator = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) return res.status(400).json({ message: 'Invalid Request' });
+
+    const results = (await evaluatorServices.deleteevaluatorService(id)) as ResultSetHeader;
+
+    if (results.affectedRows === 0) return res.status(404).json({ message: 'Evaluator not found' });
 
     const response: ResponseSuccess = {
       message: 'success',
       data: results
     }
     return res.status(200).json(response);
-  });
-};
 
-export const updateEvaluator = (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { name } = req.body;
-
-  if (!name) {
-    res.status(400).json({ message: 'name required' });
-    return;
-  } else if (!id){
-    res.status(400).json({ message: 'id required' });
-    return;
+  } catch (err) {
+    console.error('Error deleting data:', err);
+    return res.status(500).json({ message: 'Database error' });
   }
-
-  const query = "UPDATE evaluator SET nama_evaluator = ? WHERE id_evaluator = ? AND deleted_at IS NULL";
-  connection.query(query, [name, id], (err, results) => {
-    if (err) {
-      console.error('Error updating data:', err);
-      return res.status(500).json({ message: 'Database error' });
-    }
-
-    const result = results as ResultSetHeader;
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'evaluator not found' });
-    }
-
-    const response: ResponseSuccess = {
-      message: 'success',
-      data: results
-    }
-    return res.status(200).json({ response });
-  });
-};
-
-export const deleteEvaluator = (req: Request, res: Response) => {
-  const { id } = req.params;
-
-  if (!id) {
-    res.status(400).json({ message: 'Invalid Request' });
-    return;
-  }
-
-  const query = "UPDATE evaluator SET deleted_at = NOW() WHERE id_evaluator = ?";
-  connection.query(query, [id], (err, results) => {
-    if (err) {
-      console.error('Error updating data:', err);
-      return res.status(500).json({ message: 'Database error' });
-    }
-
-    const result = results as ResultSetHeader;
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'evaluator not found' });
-      
-    }
-
-    return res.status(200).json({ message: 'success' });
-  });
 };
