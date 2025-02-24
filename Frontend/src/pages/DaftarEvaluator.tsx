@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
 
 const API_URL = "http://localhost:5000/api/evaluator";
 
@@ -7,12 +9,14 @@ interface IEvaluator {
     id_evaluator: number;
     nama_evaluator: string;
     deleted_at: string | null;
-  }
+}
 
-export default function DataTable() {
+function DaftarEvaluator(){
   const [data, setData] = useState<IEvaluator[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -31,22 +35,22 @@ export default function DataTable() {
   if (error) return <p className="text-center text-red-500">Error: {error}</p>;
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Evaluator</h1>
-      <div className="overflow-x-auto">
-        <table className="min-w-full border border-gray-500">
+    <div className="">
+      <h1 className="">Evaluator</h1>
+      <div className="">
+        <table className="">
           <thead>
-            <tr className="bg-gray-200">
-              <th className="border border-gray-500 p-2">ID</th>
-              <th className="border border-gray-500 p-2">Nama</th>
+            <tr className="">
+              <th className="">ID</th>
+              <th className="">Nama</th>
             </tr>
           </thead>
           <tbody>
             {data.length > 0 ? (
               data.map((item) => (
-                <tr key={item.id_evaluator} className="border">
-                  <td className="border border-gray-500 p-2 text-center">{item.id_evaluator}</td>
-                  <td className="border border-gray-500 p-2">{item.nama_evaluator}</td>
+                <tr key={item.id_evaluator} className="">
+                  <td className="">{item.id_evaluator}</td>
+                  <td className="">{item.nama_evaluator}</td>
                 </tr>
               ))
             ) : (
@@ -58,7 +62,10 @@ export default function DataTable() {
             )}
           </tbody>
         </table>
+        <Button variant="primary" onClick={() => navigate("/")} className="mt-5">Home</Button>
       </div>
     </div>
   );
 }
+
+export default DaftarEvaluator;
