@@ -24,7 +24,7 @@ export const createDaftarEvaluatorPermohonan = async (req: Request, res: Respons
 
 export const getDaftarEvaluatorsPermohonan = async (req: Request, res: Response) => {
   try {
-    const results = await daftarEvaluatorPermohonanServices.getDaftarEvaluatorPermohonansService();
+    const results = await daftarEvaluatorPermohonanServices.getDaftarEvaluatorPermohonanJoinService();
     const response: ResponseSuccess = {
       message: 'success',
       data: results
@@ -39,8 +39,9 @@ export const getDaftarEvaluatorsPermohonan = async (req: Request, res: Response)
 
 export const getDaftarEvaluatorPermohonan = async (req: Request, res: Response) => {
   try {
-    const { id_evaluator_permohonan } = req.params
-    const results = await daftarEvaluatorPermohonanServices.getDaftarEvaluatorPermohonanService( Number(id_evaluator_permohonan) );
+    const { id_evaluator_permohonan } = req.params;
+    if(!id_evaluator_permohonan) return res.status(400).json({ message: 'Data kosong' });
+    const results = await daftarEvaluatorPermohonanServices.getDaftarEvaluatorPermohonanService(id_evaluator_permohonan);
     const response: ResponseSuccess = {
       message: 'success',
       data: results
@@ -52,6 +53,23 @@ export const getDaftarEvaluatorPermohonan = async (req: Request, res: Response) 
     return res.status(500).json({ message: 'Database error' });
   }
 };
+
+export const getEvaluatorPermohonan = async (req: Request, res: Response) => {
+  try {
+    const { id_evaluator } = req.params;
+    if(!id_evaluator) return res.status(400).json({ message: 'Data kosong' });
+    const results = await daftarEvaluatorPermohonanServices.getEvaluatorPermohonanService(id_evaluator);
+    const response: ResponseSuccess = {
+      message: 'success',
+      data: results
+    }
+    return res.status(200).json(response);
+
+  } catch (err) {
+    console.error('Error fetching data:', err);
+    return res.status(500).json({ message: 'Database error' });
+  }
+}
 
 export const updateDaftarEvaluatorPermohonan = async (req: Request, res: Response) => {
   try {
